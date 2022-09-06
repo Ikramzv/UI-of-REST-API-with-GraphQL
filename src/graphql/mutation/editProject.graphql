@@ -1,0 +1,8 @@
+mutation UpdateProject($id: String!, $options: UpdateInput!) {
+  updateProject(id: $id, options: $options) {
+    name
+    description
+    clientId
+    status
+  }
+}

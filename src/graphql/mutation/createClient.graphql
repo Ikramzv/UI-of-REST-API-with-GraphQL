@@ -1,0 +1,8 @@
+mutation CreateClient($options: ClientInput!) {
+  createClient(options: $options) {
+    name
+    email
+    phone
+    _id
+  }
+}
