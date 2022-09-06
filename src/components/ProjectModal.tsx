@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { FaRProject } from 'react-icons/fa'
-import { Project, ProjectsDocument, useCreateProjectMutation } from '../generated/graphql'
+import { Project, ProjectsDocument, useClientsQuery, useCreateProjectMutation } from '../generated/graphql'
 
 function ProjectModal() {
     const [form , setForm] = useState({
         name: '',
         description: '',
         status: '',
+        clientId: ''
     })
     const [createProject, { data, error , loading }] = useCreateProjectMutation()
+    const { data: clients } = useClientsQuery()
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault()
@@ -71,10 +73,18 @@ function ProjectModal() {
                             </div>
                             <div className='mb-3' >
                                 <label className='form-label'>Status</label>
-                                <select className='form-select' id='status' value={form.status} onChange={handleChange} name='status' >
+                                <select className='form-select' value={form.status} onChange={handleChange} name='status' >
                                     <option value="NotStarted">Not Started</option>
                                     <option value="Progress">In Progress</option>
                                     <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className='form-label'>Select Client</label>
+                                <select name="clientId" onChange={handleChange} value={form.clientId} className='form-select' >
+                                    {clients?.clients.map((client) => (
+                                        <option key={client._id} value={client._id}>{client.name}</option>
+                                    ))}
                                 </select>
                             </div>
                             <button 
